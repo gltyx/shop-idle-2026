@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"> 
+	<meta name="viewport" content="width=device-width">
+	<title>商店汉化版 Shop CN</title>
+	<script src="js/lib/jquery.js"></script>
+	<script src="js/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="js/functions/general.js?v=1.000000"></script>
+	<script src="js/functions/animations.js?v=1.000000"></script>
+	<script src="js/data/config.js?v=1.000000"></script>
+	<script src="js/data/available_locations.js?v=1.000000"></script>
+	<script src="js/data/available_actions.js?v=1.000000"></script>
+	<script src="js/data/available_items.js?v=1.000001"></script>
+	<script src="js/data/available_units.js?v=1.000000"></script>
+	<script src="js/data/available_monsters.js?v=1.000000"></script>
+	<script src="js/data/available_achievements.js?v=1.000000"></script>
+
+	<script src="js/localstorage.js?v=1.000000"></script>
+	<script src="js/shop.js?v=1.000000"></script>
+	<script src="js/skills.js?v=1.000000"></script>
+	<script src="js/locations.js?v=1.000000"></script>
+	<script src="js/actions.js?v=1.000001"></script>
+	<script src="js/items.js?v=1.000000"></script>
+	<script src="js/monsters.js?v=1.000000"></script>
+	<script src="js/floating_text.js?v=1.000000"></script>
+	<script src="js/achievements.js?v=1.000000"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/main.css?v=1.000000">
+	<link rel="stylesheet" type="text/css" href="css/shop.css?v=1.000000">
+	<link rel="stylesheet" type="text/css" href="css/locations.css?v=1.000000">
+	<link rel="stylesheet" type="text/css" href="css/actions.css?v=1.000000">
+	<link rel="stylesheet" type="text/css" href="css/floating_text.css?v=1.000000">
+	<link rel="stylesheet" type="text/css" href="css/achievements.css?v=1.000000">
+	<link rel="stylesheet" href="js/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Caveat+Brush" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+</head>
+<body>
+	<div class="main_window">
+		<div class="paper_bg"></div>
+		<div id="content_loading" class="page_container active">
+			
+			<div class="page_section">
+				加载中...
+			</div>	
+			<div class="page_section">
+				<span class="processing_amount"></span>
+			</div>
+			
+		</div>
+		<div id="content_home" class="page_container">
+			<div class="shop_bg"></div>
+			<div class="page_section">
+				<button class="menu_button slim" data-target-content="locations">位置</button>
+				<button class="menu_button slim" data-target-content="options">选项</button>
+			</div>
+			<div class="page_section counters_container">
+				<span class="counters_title">销售</span><br/>
+				硬币：<span class="item_coins commas"></span><br/>
+				店铺价值： <span class="coins_gained"></span>
+				<!-- Trade speed: <span class="trade_speed_level"></span><br/>
+				Upgrade cost: <span class="trade_speed_cost"></span><br/>
+				<button class="slim gold trade_speed_upgrade_button" onclick="upgrade_trade_speed()">Upgrade</button> -->
+			</div>	
+			<div class="all_counters">
+			</div>
+			<div class="new_counters">
+			</div>		
+			
+		</div>
+		<div id="content_set_counter" class="page_container">
+			<div class="shop_bg"></div>
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+			</div>
+			<div class="item_list"></div>
+			<div class="achievement_page_container"><span class="page_back" onclick="adjust_inventory_page(-1)"><</span> <span class="page_number"></span><span class="page_further" onclick="adjust_inventory_page(1)">></span></div>
+		</div>
+		<div id="content_assign_units" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim" data-target-content="current_action">返回</button>
+			</div>
+			<div class="item_list"></div>
+		</div>
+		
+		<div id="content_achievements" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+				<button class="menu_button slim" data-target-content="spend_ap">花费 AP</button>
+			</div>
+			<div class="ap_amount_container"></div>
+			<div class="achievement_list"></div>
+			<div class="achievement_page_container"><span class="page_back" onclick="adjust_achievement_page(-1)"><</span> <span class="page_number"></span><span class="page_further" onclick="adjust_achievement_page(1)">></span></div>
+		</div>
+		<div id="content_single_achievement" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim" data-target-content="achievements">成就</button>
+			</div>
+			<div class="achievement_details"></div>
+		</div>
+		<div id="content_spend_ap" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim" data-target-content="achievements">成就</button>
+			</div>
+			<div class="ap_amount_container"></div>
+			<div class="spend_ap_list"></div>
+		</div>
+		<div id="content_single_ap_bonus" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim" data-target-content="spend_ap">返回</button>
+			</div>
+			<div class="ap_amount_container"></div>
+			<div class="single_ap_bonus_container"></div>
+		</div>
+		
+		<div id="content_set_counter_item" class="page_container">
+			<div class="shop_bg"></div>
+			<div class="page_section">
+				<!-- <button class="menu_button slim" data-target-content="home">Shop</button> -->
+				<button class="menu_button slim" data-target-content="set_counter">返回</button>
+			</div>
+			<div class="page_section">
+				<div class="selected_item"></div>
+				<div class="amount_select_section">
+					<div class="amount_select select_less" onclick="adjust_sell_amount(-1)">-</div>
+					<div class="amount_select select_more" onclick="adjust_sell_amount(1)">+</div>
+				</div>
+				
+			</div>
+			<div class="set_counter_summary">
+					<div class="summary_title">说明</div>
+					物品： <span class="item_sold"></span><br/>
+					数量： <span class="amount_sold"></span><br/>
+					时间： <span class="time_sold"></span><br/>
+					硬币： <span class="coins_sold"></span><br/>
+					<button class="start_selling_button disabled" onclick="start_selling()">开始销售</button>
+				</div>
+		</div>
+		<div id="content_item_details_page" class="page_container">
+			<div class="shop_bg"></div>
+			<div class="page_section">
+				<!-- <button class="menu_button slim" data-target-content="home">Shop</button> -->
+				<button class="menu_button slim" data-target-content="back">返回</button>
+			</div>
+			<div class="page_section">
+				<div class="selected_item"></div>
+			</div>
+			<div class="set_counter_summary">
+					<div class="summary_title">说明</div>
+					物品： <span class="item_sold"></span><br/>
+					时间： <span class="time_sold"></span><br/>
+					硬币： <span class="coins_sold"></span><br/>
+				</div>
+		</div>
+		<div id="content_assign_single_unit" class="page_container">
+			<div class="page_section">
+				<!-- <button class="menu_button slim" data-target-content="home">Shop</button> -->
+				<button class="menu_button slim" data-target-content="current_action">战斗</button>
+				<button class="menu_button slim" data-target-content="assign_units">返回</button>
+			</div>
+			<div class="assign_unit_container">
+				<div class="page_section">
+					<div class="selected_item"></div><br/>
+				</div>
+				<div class="set_counter_summary">
+					<div class="summary_title">统计</div>
+					<div class="item_stats"></div>
+					<button class="start_selling_button_2 disabled" onclick="assign_this_unit()">分配 1</button>
+					<button class="start_selling_button_2 disabled" onclick="assign_this_unit(true)">分配全部</button>
+				</div>
+			</div>
+		</div>
+
+		<div id="content_options" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+			</div>
+			<div class="options_container">
+				<div class="home_devider">声望</div>
+
+				<div class="page_section">
+					当前声望奖励： <span class="current_prestige_bonus"></span><br/>
+					获得声望后： <span class="next_prestige_bonus"></span></br><br/>
+					声望等级基于有史以来拥有的最高位置数量。<br/>
+					每一个声望等级都会使你的销售速度加倍。<br/>
+					当你获得声望时，除了成就，AP和技能，游戏的每个部分都会重置。<br/><br/>
+					你每完成一个成就就获得一个AP。<br/>
+					在第一次解锁后，你还可以获得每个位置的1个AP。<br/>
+					目前的成就点: <span class="current_achievement_points"></span><br/>
+					获得声望后的AP： <span class="next_achievement_points"></span><br/><br/>
+					<button class="danger" onclick="prestige_now();">重置</button><br/><br/>
+				</div>
+				<div class="home_devider">可选</div>
+				<div class="page_section">
+					降级模式将提供降级行动的选项。使用这个来平衡产品价格。<br/>降级不会退款。<br/>
+				</div>
+				<div class="page_section options_buttons">
+					
+				</div>
+				
+				<div class="home_devider"><br/>重置游戏(没有确认)</div>
+				<div class="page_section">
+					这将完全重置你的游戏。<br/>
+					<button class="danger" onclick="clearLocalStorage();location.reload();">重置</button><br/><br/>
+				</div>
+			</div>
+		</div>
+		<div id="content_unlock_location" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim danger" data-target-content="locations">取消</button>
+			</div>
+			<div class="unlockable_list"></div>
+		</div>
+		<div id="content_locations" class="page_container">
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+			</div>
+			
+			<div class="explore_section">
+				位置<br/>
+				<!-- <div class="exploration_level">
+					Exploration skill: <span class="skill_level_exploration"></span><br/>
+					Passive exploration: <span class="passive_exploration"></span><br/>
+					Upgrade cost: <span class="item_coins"></span> / <span class="passive_upgrade_cost"></span>
+					<button class="slim gold upgrade_passive_exploration_button" onclick="upgrade_passive_exploration()">Upgrade</button>
+				</div>
+				<div class="explore_bar">
+					<div class="explore_progress_bar">
+						<div class="explore_progress_bar_end">
+						</div>
+					</div>
+					<div class="explore_progress_text">
+					</div>
+				</div>
+				<button class="explore_button menu_button" data-target-content="unlock_location">Explore</button> -->
+			</div>
+		
+			<div class="known_locations">
+				<div class="known_locations_list">
+				</div>
+			</div>
+			<div class="location_buttons"></div>
+			
+		</div>
+		<div id="content_current_location" class="page_container">
+			<div class="current_location_bg"></div>
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+				<button class="menu_button slim locations_button" data-target-content="locations">位置</button>
+			</div>
+			<div class="page_section">
+				<span class="current_location_title"></span>
+			</div>
+			
+			<div class="current_location_actions">
+				<span class="current_location_parsed_actions"></span>
+			</div>
+			<div class="unlock_more_actions_button_container"><button class="menu_button slim" data-target-content="unlock_more_actions">更多操作</button></div>
+		</div>
+		<div id="content_unlock_more_actions" class="page_container">
+			<div class="current_location_bg"></div>
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="current_location">返回</button>
+			</div>
+			<div class="page_section">
+				<span class="current_location_title"></span>
+			</div>
+			
+			<div class="current_location_actions">
+				<span class="current_location_parsed_actions"></span>
+			</div>
+		</div>
+		<div id="content_current_action" class="page_container">
+			<div class="current_location_bg"></div>
+			<div class="page_section">
+				<button class="menu_button slim home_button" data-target-content="home">商店</button>
+				<button class="menu_button slim" data-target-content="current_location">返回</button>
+			</div>
+			<div class="current_action"></div>
+		</div>
+		<div class="detail_overlay">
+			<div class="card_detail"></div>
+		</div>
+	</div>
+</body>
+<script>
+
+	function prestige_now(){
+		if(gamedata['prestige'] == undefined){gamedata['prestige'] = 0;}
+		var new_prestige_bonus = count_object(gamedata['known_locations']) -1;
+		if(gamedata['bonus_achievement_points'] == undefined)
+		{
+			gamedata['bonus_achievement_points'] = 0;
+		}
+		var new_ap_bonus = 0;
+		for (var i = count_object(gamedata['known_locations']) -1; i > 0; i--) {
+			new_ap_bonus += i;
+		};
+		gamedata['bonus_achievement_points'] += new_ap_bonus;
+		gamedata['achievement_points'] = get_achievement_points();
+		if(gamedata['prestige'] > new_prestige_bonus){new_prestige_bonus = gamedata['prestige'] + 0;}
+		console.log(new_prestige_bonus);
+		//clearLocalStorage();
+		//loadLocalStorage();
+		delete gamedata['inventory'];
+		gamedata['ap_bonusses'] = {};
+		gamedata['known_locations'] = {};
+		delete gamedata['counters'];
+		gamedata['coins'] = 0;
+		gamedata['coins_gained'] = 0;
+		gamedata['prestige'] = new_prestige_bonus;
+		saveToLocalStorage();
+		show_content('home');
+	};
+
+	function show_options(){
+
+		if(gamedata['downgrade_mode'] == undefined)
+		{
+			gamedata['downgrade_mode'] == false;
+		}
+		$('.options_buttons').html('');
+		if(gamedata['downgrade_mode'] == true)
+		{
+			$('.options_buttons').append('<button class="menu_button" onclick="gamedata[\'downgrade_mode\']=false" data-target-content="options">降级 开</button>');
+		}
+		else
+		{
+			$('.options_buttons').append('<button class="menu_button danger"  onclick="gamedata[\'downgrade_mode\']=true" data-target-content="options">降级 关</button>');
+		}
+
+		if(gamedata['prestige'] == undefined){gamedata['prestige'] = 0;}
+		$('.current_prestige_bonus').html(gamedata['prestige']);
+		var new_prestige_bonus = count_object(gamedata['known_locations']) -1;
+		if(gamedata['prestige'] > new_prestige_bonus){new_prestige_bonus = gamedata['prestige'] + 0;}
+		$('.next_prestige_bonus').html(new_prestige_bonus);
+		var new_achievement_points = get_achievement_points();
+		$('.current_achievement_points').html(gamedata['achievement_points']);
+		var new_ap_bonus = 0;
+		for (var i = count_object(gamedata['known_locations']) -1; i > 0; i--) {
+			new_ap_bonus += i;
+		};
+		$('.next_achievement_points').html(new_achievement_points + new_ap_bonus);
+	}
+
+	var gamedata = loadLocalStorage();
+
+	$(document).ready(function() {
+		$('body').on('click', '.menu_button', function() {
+		    $('.menu_button.active').removeClass('active');
+			$(this).addClass('active');
+			show_content($(this).attr('data-target-content'));
+		});
+	});
+
+	var last_content = 'home';
+	var current_content = 'home';
+
+	function show_last_content(){
+		show_content(last_content);
+	}
+
+	function update_last_content(new_content){
+		last_content = current_content;
+		current_content = new_content;
+	}
+
+	function show_content(content_id){
+		if(content_id == 'back'){content_id = last_content;}
+		update_last_content(content_id);
+		//console.log(content_id);
+		if(content_id == undefined){content_id = 'home';}
+		$('.page_container.active').removeClass('active');
+		$('#content_' + content_id).addClass('active');
+
+		var possible_extra_function = window['show_' + content_id]; 
+		if (typeof possible_extra_function === "function") possible_extra_function();
+	};
+
+	$('.detail_overlay').click(function(){
+		$('.detail_overlay').html('');
+		$('.detail_overlay').fadeOut();
+	});
+
+	
+	var global_timer;
+	var last_global_tick = new Date();
+
+	$(document).ready(function(){
+		show_home();
+		check_global_timer();
+
+	});
+
+	function check_global_timer(){
+
+		var time_passed = new Date() - last_global_tick;
+		last_global_tick = new Date();
+		update_counter_timers();
+		check_ticks(time_passed);
+
+		var tick_time = 100;
+		var next_tick_delay = (tick_time * 2) - time_passed;
+		if(next_tick_delay < (tick_time / 2))
+		{
+			next_tick_delay = (tick_time / 2);
+		}
+		if(next_tick_delay > (tick_time))
+		{
+			next_tick_delay = tick_time;
+		}
+		global_timer = setTimeout(function(){
+			check_global_timer();
+		},next_tick_delay);
+	}
+
+	function requestFullScreen(element) {
+	    // Supports most browsers and their versions.
+	    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullScreen;
+
+	    if (requestMethod) { // Native full screen.
+	        requestMethod.call(element);
+	    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+	        var wscript = new ActiveXObject("WScript.Shell");
+	        if (wscript !== null) {
+	            wscript.SendKeys("{F11}");
+	        }
+	    }
+	}
+
+	var elem = document.body; // Make the body go full screen.
+	requestFullScreen(elem);
+
+</script>
+<!--客服 开始-->
+<link rel="stylesheet" href="//g8hh.github.io/static/css/kf.css" type="text/css" media="screen" charset="utf-8">
+<script src="//g8hh.github.io/static/js/kf.js"></script>
+<!-- 客服 结束 -->
+<!--站长统计-->
+    <div style="display: none">
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6581389daf4dd6fe7dbb4d20fdcb52a6";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+    </div>
+</html>
+
