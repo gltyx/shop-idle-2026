@@ -76,7 +76,7 @@ available_achievements = sortObj(available_achievements);
 var available_ap_bonusses = {
 	chef: {
 		name: 	'厨师',
-		text: 	'每级烹饪可额外获得25%的物品。',
+		text: 	'每级烹饪可额外获得25%的熟练度。',
 		background_item: 	'hamburger',
 		cost: 			5,
 		item_bonus:{
@@ -100,7 +100,7 @@ var available_ap_bonusses = {
 	},
 	haymaker: {
 		name: 	'干草机',
-		text: 	'每升一级可以额外增加25%的草和干草。',
+		text: 	'每升一级可以额外增加25%的草和干草和沙。',
 		background_item: 	'hay',
 		cost: 			1,
 		item_bonus:{
@@ -140,7 +140,7 @@ var available_ap_bonusses = {
 	},
 	alchemist: {
 		name: 	'炼金术士',
-		text: 	'每升一级可以额外增加25%的炼金术物品。',
+		text: 	'每升一级可以额外增加25%的炼金术熟练度。',
 		background_item: 	'health_potion',
 		cost: 			5,
 		item_bonus:{
@@ -162,10 +162,12 @@ var available_ap_bonusses = {
 	},
 	miner: {
 		name: 	'矿工',
-		text: 	'每升一级可以额外增加25%的物品。',
+		text: 	'每升一级可以额外增加25%的采矿熟练度和铜矿与铁矿。',
 		background_item: 	'miner',
 		cost: 			5,
 		item_bonus:{
+			copper_ore:    25,
+			iron_ore:      25,
 		},
 		skill_bonus:{
 			mining: 	25
@@ -173,7 +175,7 @@ var available_ap_bonusses = {
 	},
 	fisharman: {
 		name: 	'渔夫',
-		text: 	'每升一级可以额外增加25%的物品。',
+		text: 	'每升一级可以额外增加25%的捕鱼熟练度。',
 		background_item: 	'fisherman',
 		cost: 			2,
 		item_bonus:{
@@ -184,7 +186,7 @@ var available_ap_bonusses = {
 	},
 	farmer: {
 		name: 	'农民',
-		text: 	'每升一级农场可以额外增加25%以上的物品。',
+		text: 	'每升一级农场可以额外增加25%的种植熟练度。',
 		background_item: 	'farmer',
 		cost: 			2,
 		item_bonus:{
@@ -195,7 +197,7 @@ var available_ap_bonusses = {
 	},
 	hunter: {
 		name: 	'猎人',
-		text: 	'每升一级可以额外增加25%以上的猎物。',
+		text: 	'每升一级可以额外增加25%的打猎熟练度。',
 		background_item: 	'hunter',
 		cost: 			3,
 		item_bonus:{
@@ -205,19 +207,6 @@ var available_ap_bonusses = {
 		}
 	},
 
-	lumberjack: {
-		name: 	'泥瓦匠',
-		text: 	'每升一级可以额外增加25%的建筑材料。',
-		background_item: 	'lumberjack',
-		cost: 			2,
-		item_bonus:{
-			firewood: 	25,
-			lumber: 	25,
-			hardwood: 	25
-		},
-		skill_bonus:{
-		}
-	}
 }
 
 available_ap_bonusses = sortObj(available_ap_bonusses);

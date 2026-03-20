@@ -20,15 +20,42 @@ function loadLocalStorage(){
 
 };
 
+function clearLocalStorage(){
+	gamedata = {};
+	localStorage.removeItem(gamename);
+};
+
 function saveToLocalStorage(){
 	localStorage.removeItem(gamename);
 	localStorage.setItem(gamename, JSON.stringify(gamedata));
 };
 
-function clearLocalStorage(){
-	gamedata = {};
-	localStorage.removeItem(gamename);
-};
+
+function exportLocalStorageToFile(newgame) {
+  try {
+    const data = localStorage.getItem('newgame');
+    if (data === null) {
+      alert(`⚠️ 本地存储中未找到键 "${newgame}"`);
+      return;
+    }
+
+    // ✅ 构造文件内容（保持原始格式，若存的是 JSON 字符串，可选择美化）
+    const content = JSON.stringify(JSON.parse(data), null, 2); // 美化输出，可选
+    const blob = new Blob([content], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${newgame}.json`; // 文件名建议含扩展名
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    alert(`✅ 已成功导出 "${newgame}.json" 到本地！`);
+  } catch (err) {
+    alert(`❌ 导出失败：${err.message}`);
+  }
+
+}
 
 function check_local_storage(gamedata){
 
